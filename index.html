@@ -31,7 +31,7 @@ input[type="submit"]{
 
 <body>
     <h1 style="text-align:center;">Newsletter Sign-Up</h1>
-    <form name="MyForm" method="Post" action="thankyou.html">
+    <form name="MyForm">
         <div style="text-align:center;">
             <p>
                 <input type="text" name="fullname" placeholder="Your name*" maxlength="20">
@@ -43,7 +43,7 @@ input[type="submit"]{
                 <input type="text" name="phone" placeholder="Your phone number*" maxlength="15">
             </p>
             <p>
-                <input type="submit" name="submit" value="Submit" onClick="javascript:return validateInputs();">
+                <input type="button" name="submit" value="Submit" onClick="javascript:return validateInputs();">
             </p>
         </div>
     </form>
@@ -113,9 +113,12 @@ input[type="submit"]{
                 email = email.trim();
                 phone = phone.replace(/[^0-9\-+]/g, '');
                 phone = phone.trim();
-
+                
+                alert("Name: " + fullname +"\nEmail: " + email + "\nPhone: " + phone + "\nSubmitted successfully !");
+                
                 //ready to submit
-                document.MyForm.submit();
+               //document.MyForm.submit();
+               location.href = "submission.html";
             }
         }
 
