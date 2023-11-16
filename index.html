@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Validation Project 16</title>
+    <style>
+        input[type="text"]{
+            height: 25px;
+    width: 300px;
+    border-radius: 5px 2px;
+    font-size: 14px;
+} 
+input[type="email"]{
+            height: 25px;
+    width: 300px;
+    border-radius: 5px 2px;
+    font-size: 14px;
+}
+
+input[type="submit"]{
+            height: 25px;
+    width: 100px;
+    border-radius: 5px 2px;
+    font-size: 14px;
+}
+   
+         
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align:center;">Newsletter Sign-Up</h1>
+    <form name="MyForm" method="Post" action="thankyou.html">
+        <div style="text-align:center;">
+            <p>
+                <input type="text" name="fullname" placeholder="Your name*" maxlength="20">
+            </p>
+            <p>
+                <input type="email" name="email" placeholder="Your email*" maxlength="40">
+            </p>
+            <p>
+                <input type="text" name="phone" placeholder="Your phone number*" maxlength="15">
+            </p>
+            <p>
+                <input type="submit" name="submit" value="Submit" onClick="javascript:return validateInputs();">
+            </p>
+        </div>
+    </form>
+    <script>
+        function validateInputs() {
+            //declaration of variables
+            var SubmitForm;
+            var FormErrors;
+
+            //Initially set SubmitForm to true. 
+            SubmitForm = true;
+
+            //Retrieve variables to be validated and sanitized
+            //Assume they are dangerous for now
+            var fullname = document.MyForm.fullname.value.toString();
+            var email = document.MyForm.email.value.toString();
+            var phone = document.MyForm.phone.value.toString();
+ 
+
+            //Check that the user inputs are not blank
+            //JavaScript logical operator for OR : ||
+            if (fullname.trim().length < 1 || email.trim().length < 1 || phone.trim().length < 1) {
+                FormErrors = "All fields are mandatory. Please complete the form.";
+                SubmitForm = false;
+            } 
+            else  
+            {
+                //Set up a filter for the pattern of an email
+                //Learn more about referencing characters:          
+                //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes
+
+                var filter = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+               
+                //Use test() method to check user email against the filter
+                //test() method: https://www.w3schools.com/jsref/jsref_regexp_test.asp  
+                
+                if (!filter.test(email)) {
+                    FormErrors = "Your form contains invalid email. Please correct your email before submitting";
+                    SubmitForm = false;
+                }
+                  
+               
+                // else if(!validateEmail(email)){
+                //     FormErrors = "Your form contains invalid email. Please correct your email before submitting";
+                //     SubmitForm = false;
+                // }
+
+                if(!IsValidPhoneNumber(phone)){
+                    //FormErrors = "Your phone number contains invalid values. Please correct your phone number before submitting";
+                    SubmitForm = false;
+                }
+                
+            }
+
+            if (SubmitForm == false) {
+                //The form cannot be submitted.
+                if(FormErrors != undefined){ 
+                    alert(FormErrors);
+                }
+                return false;
+            } else {
+                //SANITIZE user inputs by allowing only [a-z 0-9 _ - . @] 
+                //strip forbidden characters
+                fullname = fullname.replace(/[^a-z0-9\s\-]/gim, "");
+                fullname = fullname.trim();
+                email = email.replace(/[^a-z0-9_@.-]/gim, "");
+                email = email.trim();
+
+                //ready to submit
+                document.MyForm.submit();
+            }
+        }
+
+        // function IsValidPhoneNumber(phone){
+        //     alert(phone);
+        // }
+
+        function IsValidPhoneNumber(phone){ 
+            var validPhone = true;
+            var onlynumber = phone.replace(/[-+]/g, '');
+
+            // Check that the phone number contains only numbers and dashes
+            var phoneRegex = /^[0-9-]+$/;
+
+            // Check if the phone number is not blank
+            if (phone.trim() === '') {
+                alert('Phone number cannot be blank.');
+                validPhone = false;
+            }
+            else if (!phoneRegex.test(phone)) {
+                alert('Phone number can only contain numbers and dashes.');
+                validPhone = false;
+            }  
+            else if (onlynumber.trim().length < 10) {
+                alert('Phone number cannot be less than 10 digits.');
+                validPhone = false;
+            }
+
+            return validPhone;
+        }
+
+        function validateEmail(email) { 
+         var emailRegex = /^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/;
+
+         if (emailRegex.test(email)) {
+             alert('Email is valid!');
+            return true;
+         } else {
+            
+              alert('Invalid email format. Please enter a valid email address.');
+              return false;
+         }
+      }
+    
+       
+    </script>
+</body>
+
+</html>
